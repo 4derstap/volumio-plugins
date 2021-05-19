@@ -1,0 +1,21 @@
+{
+	"name": "welle-cli",
+	"version": "1.0.0",
+	"description": "Uses welle-cli to play DAB+ radio stations",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "4derstap",
+	"license": "ISC",
+	"volumio_info": {
+		"prettyName": "welle-cli",
+		"icon": "fa-lightbulb-o",
+		"plugin_type": "music_service"
+	},
+	"dependencies": {
+		"fs-extra": "^0.28.0",
+		"kew": "^0.7.0",
+		"v-conf": "^1.4.0"
+	}
+}
