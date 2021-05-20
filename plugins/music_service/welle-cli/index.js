@@ -134,10 +134,10 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
 
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
-          self.resetHistory();
-          self.historyAdd(curUri);
-          response = self.listRoot(curUri);
-        } else {}
+            self.resetHistory();
+            self.historyAdd(curUri);
+            response = self.listRoot(curUri);
+        } else { }
     }
 
     return response;
@@ -148,41 +148,42 @@ welle_cli.prototype.listRoot = function () {
     var defer = libQ.defer();
 
     var radioRoot = {
-      'navigation': {
-        'lists': [
-          {
-            'availableListViews': [
-              'grid', 'list'
+        'navigation': {
+            'lists': [
+                {
+                    'availableListViews': [
+                        'grid', 'list'
+                    ],
+                    'items': [
+                        {
+                            service: 'welle_io',
+                            type: 'dab-radio',
+                            title: 'Radio Bob!',
+                            artist: '',
+                            album: '',
+                            icon: 'fa fa-music',
+                            uri: 'welle_io/channel/1',
+                            url: 'http://192.168.2.197:7979/mp3/0x15dd'
+                        },
+                        {
+                            service: 'welle_io',
+                            type: 'dab-radio',
+                            title: 'Rock Antenne',
+                            artist: '',
+                            album: '',
+                            icon: 'fa fa-music',
+                            uri: 'welle_io/channel/2',
+                            url: 'http://192.168.2.197:7979/mp3/0x15dd'
+                        }
+                    ]
+                }
             ],
-            'items': [
-              {
-                service: 'welle_io',
-                type: 'dab-radio',
-                title: 'Radio Bob!',
-                artist: '',
-                album: '',
-                icon: 'fa fa-music',
-                uri: 'welle_io/channel/1'
-                url: 'http://192.168.2.197:7979/mp3/0x15dd'
-              },
-              {
-                service: 'welle_io',
-                type: 'dab-radio',
-                title: 'Rock Antenne',
-                artist: '',
-                album: '',
-                icon: 'fa fa-music',
-                uri: 'welle_io/channel/2'
-                url: 'http://192.168.2.197:7979/mp3/0x15dd'
-              }
-            ]
-          }
-        ],
-        'prev': {
-          'uri': '/'
+            'prev': {
+                'uri': '/'
+            }
         }
-      }
-    };
+    }
+};
 
 // Define a method to clear, add, and play an array of tracks
 welle_cli.prototype.clearAddPlayTrack = function (track) {
