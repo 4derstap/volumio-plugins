@@ -131,6 +131,7 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
     var response;
 
     //self.commandRouter.logger.info(curUri);
+    // curl -X POST http://192.168.2.197:7979/channel -d 5C
 
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
@@ -152,7 +153,7 @@ welle_cli.prototype.listRoot = function () {
             'lists': [
                 {
                     'availableListViews': [
-                        'grid', 'list'
+                        'list'
                     ],
                     'items': [
                         {
