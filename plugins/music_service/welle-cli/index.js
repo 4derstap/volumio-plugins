@@ -33,6 +33,7 @@ welle_cli.prototype.onStart = function () {
     var self = this;
     var defer = libQ.defer();
 
+    self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
 
     // Once the Plugin has successfull started resolve the promise
     defer.resolve();
@@ -43,6 +44,8 @@ welle_cli.prototype.onStart = function () {
 welle_cli.prototype.onStop = function () {
     var self = this;
     var defer = libQ.defer();
+
+    self.removeFromBrowseSources();
 
     // Once the Plugin has successfull stopped resolve the promise
     defer.resolve();
@@ -107,21 +110,79 @@ welle_cli.prototype.setConf = function (varName, varValue) {
 welle_cli.prototype.addToBrowseSources = function () {
 
     // Use this function to add your music service plugin to music sources
-    //var data = {name: 'Spotify', uri: 'spotify',plugin_type:'music_service',plugin_name:'spop'};
+    var data = {
+        name: 'Welle.io DAB+ Radio',
+        uri: 'welle_io',
+        plugin_type: 'music_service',
+        plugin_name: 'welle-cli'
+    };
     this.commandRouter.volumioAddToBrowseSources(data);
+};
+
+ControllerRadioParadise.prototype.removeFromBrowseSources = function () {
+    // Use this function to add your music service plugin to music sources
+    var self = this;
+
+    self.commandRouter.volumioRemoveToBrowseSources('Welle.io DAB+ Radio');
 };
 
 welle_cli.prototype.handleBrowseUri = function (curUri) {
     var self = this;
-
-    //self.commandRouter.logger.info(curUri);
     var response;
 
+    //self.commandRouter.logger.info(curUri);
+
+    if (curUri.startsWith('welle_io')) {
+        if (curUri == 'welle_io') {
+          self.resetHistory();
+          self.historyAdd(curUri);
+          response = self.listRoot(curUri);
+        } else {}
+    }
 
     return response;
 };
 
+welle_cli.prototype.listRoot = function () {
+    var self = this;
+    var defer = libQ.defer();
 
+    var radioRoot = {
+      'navigation': {
+        'lists': [
+          {
+            'availableListViews': [
+              'grid', 'list'
+            ],
+            'items': [
+              {
+                service: 'welle_io',
+                type: 'dab-radio',
+                title: 'Radio Bob!',
+                artist: '',
+                album: '',
+                icon: 'fa fa-music',
+                uri: 'welle_io/channel/1'
+                url: 'http://192.168.2.197:7979/mp3/0x15dd'
+              },
+              {
+                service: 'welle_io',
+                type: 'dab-radio',
+                title: 'Rock Antenne',
+                artist: '',
+                album: '',
+                icon: 'fa fa-music',
+                uri: 'welle_io/channel/2'
+                url: 'http://192.168.2.197:7979/mp3/0x15dd'
+              }
+            ]
+          }
+        ],
+        'prev': {
+          'uri': '/'
+        }
+      }
+    };
 
 // Define a method to clear, add, and play an array of tracks
 welle_cli.prototype.clearAddPlayTrack = function (track) {
