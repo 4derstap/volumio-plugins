@@ -34,6 +34,7 @@ welle_cli.prototype.onStart = function () {
     var defer = libQ.defer();
 
     self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
+    self.addToBrowseSources();
 
     // Once the Plugin has successfull started resolve the promise
     defer.resolve();
@@ -130,6 +131,7 @@ welle_cli.prototype.removeFromBrowseSources = function () {
 welle_cli.prototype.handleBrowseUri = function (curUri) {
     var self = this;
     var response;
+    var defer = libQ.defer();
 
     //self.commandRouter.logger.info(curUri);
     // curl -X POST http://192.168.2.197:7979/channel -d 5C
@@ -141,6 +143,7 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
             response = self.listRoot(curUri);
         } else { }
     }
+    defer.resolve(response);
 
     return response
         .fail(function (e) {
