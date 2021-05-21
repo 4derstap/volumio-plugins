@@ -120,7 +120,7 @@ welle_cli.prototype.addToBrowseSources = function () {
     this.commandRouter.volumioAddToBrowseSources(data);
 };
 
-ControllerRadioParadise.prototype.removeFromBrowseSources = function () {
+welle_cli.prototype.removeFromBrowseSources = function () {
     // Use this function to add your music service plugin to music sources
     var self = this;
 
