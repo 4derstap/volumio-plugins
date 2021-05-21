@@ -31,15 +31,12 @@ welle_cli.prototype.onVolumioStart = function () {
 
 welle_cli.prototype.onStart = function () {
     var self = this;
-    var defer = libQ.defer();
 
     self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
     self.addToBrowseSources();
 
     // Once the Plugin has successfull started resolve the promise
-    defer.resolve();
-
-    return defer.promise;
+    return libQ.resolve();
 };
 
 welle_cli.prototype.onStop = function () {
@@ -109,7 +106,7 @@ welle_cli.prototype.setConf = function (varName, varValue) {
 
 
 welle_cli.prototype.addToBrowseSources = function () {
-
+    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] addToBrowseSources');
     // Use this function to add your music service plugin to music sources
     var data = {
         name: 'Welle.io DAB+ Radio',
@@ -135,7 +132,7 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
 
     //self.commandRouter.logger.info(curUri);
     // curl -X POST http://192.168.2.197:7979/channel -d 5C
-
+    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] handleBrowseUri: ' + curUri);
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
             self.resetHistory();
@@ -145,7 +142,7 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
     }
     defer.resolve(response);
 
-    return response
+    return defer.promise
         .fail(function (e) {
             self.logger.info('[' + Date.now() + '] ' + '[welle-cli] handleBrowseUri failed');
             libQ.reject(new Error());
