@@ -114,7 +114,8 @@ welle_cli.prototype.addToBrowseSources = function () {
         name: 'Welle.io DAB+ Radio',
         uri: 'welle_io',
         plugin_type: 'music_service',
-        plugin_name: 'welle-cli'
+        plugin_name: 'welle-cli',
+        albumart: '/albumart?sourceicon=music_service/welle-cli/icon.png'
     };
     this.commandRouter.volumioAddToBrowseSources(data);
 };
@@ -141,7 +142,11 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
         } else { }
     }
 
-    return response;
+    return response
+        .fail(function (e) {
+            self.logger.info('[' + Date.now() + '] ' + '[welle-cli] handleBrowseUri failed');
+            libQ.reject(new Error());
+        });
 };
 
 welle_cli.prototype.listRoot = function () {
