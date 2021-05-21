@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Installing welle-cli Dependencies"
+echo "Installing welle_io Dependencies"
 sudo apt-get update
 # Install the required packages via apt-get
 #sudo apt-get -y install

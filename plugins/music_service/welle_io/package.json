@@ -1,7 +1,7 @@
 {
-    "name": "welle-cli",
+    "name": "welle_io",
     "version": "1.0.0",
-    "description": "Uses welle-cli to play DAB+ radio stations",
+    "description": "Uses welle.io to play DAB+ radio stations",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
