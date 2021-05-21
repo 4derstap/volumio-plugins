@@ -33,8 +33,14 @@ welle_cli.prototype.onStart = function () {
     var self = this;
 
     self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
+    self.serviceName = 'welle-cli';
+    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] onStart');
+
+    //self.loadRadioI18nStrings();
+    //self.addRadioResource();
     self.addToBrowseSources();
 
+    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] onStart - done');
     // Once the Plugin has successfull started resolve the promise
     return libQ.resolve();
 };
