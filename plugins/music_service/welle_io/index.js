@@ -7,8 +7,8 @@ var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
 
 
-module.exports = welle_cli;
-function welle_cli(context) {
+module.exports = ControllerWelle;
+function ControllerWelle(context) {
     var self = this;
 
     this.context = context;
@@ -20,7 +20,7 @@ function welle_cli(context) {
 
 
 
-welle_cli.prototype.onVolumioStart = function () {
+ControllerWelle.prototype.onVolumioStart = function () {
     var self = this;
     var configFile = this.commandRouter.pluginManager.getConfigurationFile(this.context, 'config.json');
     this.config = new (require('v-conf'))();
@@ -29,23 +29,23 @@ welle_cli.prototype.onVolumioStart = function () {
     return libQ.resolve();
 }
 
-welle_cli.prototype.onStart = function () {
+ControllerWelle.prototype.onStart = function () {
     var self = this;
 
     self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
-    self.serviceName = 'welle-cli';
-    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] onStart');
+    self.serviceName = 'welle_io';
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] onStart');
 
     //self.loadRadioI18nStrings();
     //self.addRadioResource();
     self.addToBrowseSources();
 
-    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] onStart - done');
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] onStart - done');
     // Once the Plugin has successfull started resolve the promise
     return libQ.resolve();
 };
 
-welle_cli.prototype.onStop = function () {
+ControllerWelle.prototype.onStop = function () {
     var self = this;
     var defer = libQ.defer();
 
@@ -57,7 +57,7 @@ welle_cli.prototype.onStop = function () {
     return libQ.resolve();
 };
 
-welle_cli.prototype.onRestart = function () {
+ControllerWelle.prototype.onRestart = function () {
     var self = this;
     // Optional, use if you need it
 };
@@ -65,7 +65,7 @@ welle_cli.prototype.onRestart = function () {
 
 // Configuration Methods -----------------------------------------------------------------------------
 
-welle_cli.prototype.getUIConfig = function () {
+ControllerWelle.prototype.getUIConfig = function () {
     var defer = libQ.defer();
     var self = this;
 
@@ -86,21 +86,21 @@ welle_cli.prototype.getUIConfig = function () {
     return defer.promise;
 };
 
-welle_cli.prototype.getConfigurationFiles = function () {
+ControllerWelle.prototype.getConfigurationFiles = function () {
     return ['config.json'];
 }
 
-welle_cli.prototype.setUIConfig = function (data) {
+ControllerWelle.prototype.setUIConfig = function (data) {
     var self = this;
     //Perform your installation tasks here
 };
 
-welle_cli.prototype.getConf = function (varName) {
+ControllerWelle.prototype.getConf = function (varName) {
     var self = this;
     //Perform your installation tasks here
 };
 
-welle_cli.prototype.setConf = function (varName, varValue) {
+ControllerWelle.prototype.setConf = function (varName, varValue) {
     var self = this;
     //Perform your installation tasks here
 };
@@ -111,34 +111,34 @@ welle_cli.prototype.setConf = function (varName, varValue) {
 // If your plugin is not a music_sevice don't use this part and delete it
 
 
-welle_cli.prototype.addToBrowseSources = function () {
-    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] addToBrowseSources');
+ControllerWelle.prototype.addToBrowseSources = function () {
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] addToBrowseSources');
     // Use this function to add your music service plugin to music sources
     var data = {
         name: 'Welle.io DAB+ Radio',
         uri: 'welle_io',
         plugin_type: 'music_service',
-        plugin_name: 'welle-cli',
-        albumart: '/albumart?sourceicon=music_service/welle-cli/icon.png'
+        plugin_name: 'welle_io',
+        albumart: '/albumart?sourceicon=music_service/welle_io/icon.png'
     };
     this.commandRouter.volumioAddToBrowseSources(data);
 };
 
-welle_cli.prototype.removeFromBrowseSources = function () {
+ControllerWelle.prototype.removeFromBrowseSources = function () {
     // Use this function to add your music service plugin to music sources
     var self = this;
 
     self.commandRouter.volumioRemoveToBrowseSources('Welle.io DAB+ Radio');
 };
 
-welle_cli.prototype.handleBrowseUri = function (curUri) {
+ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     var self = this;
     var response;
     var defer = libQ.defer();
 
     //self.commandRouter.logger.info(curUri);
     // curl -X POST http://192.168.2.197:7979/channel -d 5C
-    self.logger.info('[' + Date.now() + '] ' + '[welle-cli] handleBrowseUri: ' + curUri);
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: ' + curUri);
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
             self.resetHistory();
@@ -150,12 +150,12 @@ welle_cli.prototype.handleBrowseUri = function (curUri) {
 
     return defer.promise
         .fail(function (e) {
-            self.logger.info('[' + Date.now() + '] ' + '[welle-cli] handleBrowseUri failed');
+            self.logger.info('[' + Date.now() + '] ' + '[welle_io] handleBrowseUri failed');
             libQ.reject(new Error());
         });
 };
 
-welle_cli.prototype.listRoot = function () {
+ControllerWelle.prototype.listRoot = function () {
     var self = this;
     var defer = libQ.defer();
 
@@ -198,63 +198,63 @@ welle_cli.prototype.listRoot = function () {
 };
 
 // Define a method to clear, add, and play an array of tracks
-welle_cli.prototype.clearAddPlayTrack = function (track) {
+ControllerWelle.prototype.clearAddPlayTrack = function (track) {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::clearAddPlayTrack');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::clearAddPlayTrack');
 
     self.commandRouter.logger.info(JSON.stringify(track));
 
     return self.sendSpopCommand('uplay', [track.uri]);
 };
 
-welle_cli.prototype.seek = function (timepos) {
-    this.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::seek to ' + timepos);
+ControllerWelle.prototype.seek = function (timepos) {
+    this.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::seek to ' + timepos);
 
     return this.sendSpopCommand('seek ' + timepos, []);
 };
 
 // Stop
-welle_cli.prototype.stop = function () {
+ControllerWelle.prototype.stop = function () {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::stop');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::stop');
 
 
 };
 
 // Spop pause
-welle_cli.prototype.pause = function () {
+ControllerWelle.prototype.pause = function () {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::pause');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::pause');
 
 
 };
 
 // Get state
-welle_cli.prototype.getState = function () {
+ControllerWelle.prototype.getState = function () {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::getState');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::getState');
 
 
 };
 
 //Parse state
-welle_cli.prototype.parseState = function (sState) {
+ControllerWelle.prototype.parseState = function (sState) {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::parseState');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::parseState');
 
     //Use this method to parse the state and eventually send it with the following function
 };
 
 // Announce updated State
-welle_cli.prototype.pushState = function (state) {
+ControllerWelle.prototype.pushState = function (state) {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'welle_cli::pushState');
+    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::pushState');
 
     return self.commandRouter.servicePushState(state, self.servicename);
 };
 
 
-welle_cli.prototype.explodeUri = function (uri) {
+ControllerWelle.prototype.explodeUri = function (uri) {
     var self = this;
     var defer = libQ.defer();
 
@@ -263,7 +263,7 @@ welle_cli.prototype.explodeUri = function (uri) {
     return defer.promise;
 };
 
-welle_cli.prototype.getAlbumArt = function (data, path) {
+ControllerWelle.prototype.getAlbumArt = function (data, path) {
 
     var artist, album;
 
@@ -302,7 +302,7 @@ welle_cli.prototype.getAlbumArt = function (data, path) {
 
 
 
-welle_cli.prototype.search = function (query) {
+ControllerWelle.prototype.search = function (query) {
     var self = this;
     var defer = libQ.defer();
 
@@ -311,24 +311,24 @@ welle_cli.prototype.search = function (query) {
     return defer.promise;
 };
 
-welle_cli.prototype._searchArtists = function (results) {
+ControllerWelle.prototype._searchArtists = function (results) {
 
 };
 
-welle_cli.prototype._searchAlbums = function (results) {
+ControllerWelle.prototype._searchAlbums = function (results) {
 
 };
 
-welle_cli.prototype._searchPlaylists = function (results) {
+ControllerWelle.prototype._searchPlaylists = function (results) {
 
 
 };
 
-welle_cli.prototype._searchTracks = function (results) {
+ControllerWelle.prototype._searchTracks = function (results) {
 
 };
 
-welle_cli.prototype.goto = function (data) {
+ControllerWelle.prototype.goto = function (data) {
     var self = this
     var defer = libQ.defer()
 
