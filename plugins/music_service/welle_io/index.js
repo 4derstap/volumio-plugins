@@ -112,6 +112,8 @@ ControllerWelle.prototype.setConf = function (varName, varValue) {
 
 
 ControllerWelle.prototype.addToBrowseSources = function () {
+    var self = this;
+
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] addToBrowseSources');
     // Use this function to add your music service plugin to music sources
     var data = {
