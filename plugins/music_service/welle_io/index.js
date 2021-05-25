@@ -143,11 +143,10 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: ' + curUri);
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
-            self.resetHistory();
-            self.historyAdd(curUri);
             response = self.listRoot(curUri);
         } else { }
     }
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri - response: ' + response);
     defer.resolve(response);
 
     return defer.promise
@@ -158,9 +157,6 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
 };
 
 ControllerWelle.prototype.listRoot = function () {
-    var self = this;
-    var defer = libQ.defer();
-
     var radioRoot = {
         'navigation': {
             'lists': [
