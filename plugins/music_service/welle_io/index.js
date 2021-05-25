@@ -173,7 +173,7 @@ ControllerWelle.prototype.listRoot = function () {
                     'items': [
                         {
                             service: 'welle_io',
-                            type: 'dab-radio',
+                            type: 'mywebradio',
                             title: 'Radio Bob!',
                             artist: '',
                             album: '',
@@ -183,7 +183,7 @@ ControllerWelle.prototype.listRoot = function () {
                         },
                         {
                             service: 'welle_io',
-                            type: 'dab-radio',
+                            type: 'mywebradio',
                             title: 'Rock Antenne',
                             artist: '',
                             album: '',
