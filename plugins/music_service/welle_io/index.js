@@ -142,10 +142,9 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     // curl -X POST http://192.168.2.197:7979/channel -d 5C
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: ' + curUri);
     if (curUri.startsWith('welle_io')) {
+        response = self.listRoot(curUri);
         if (curUri == 'welle_io') {
-            response = self.listRoot(curUri);
         } else if (curUri.startsWith('welle_io/channel/')) {
-            response = self.listRoot(curUri);
             var selectedChannel = curUri.split('/')[2];
             self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: selected channel ' + selectedChannel);
         } else {
@@ -266,10 +265,12 @@ ControllerWelle.prototype.explodeUri = function (uri) {
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: ' + uri);
     var selectedChannel = uri.split('/')[2];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: selected channel ' + selectedChannel);
+    var channel = self.listRoot().navigation.lists.items[selectedChannel - 1];
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: playing channel ' + channel.title);
     defer.resolve({
-        uri: self.listRoot().navigation.lists.items[selectedChannel - 1].uri,
+        uri: channel.uri,
         service: self.serviceName,
-        name: self.listRoot().navigation.lists.items[selectedChannel - 1].title,
+        name: channel.title,
         //radioType: station,
         trackType: 'welle_io',
         type: 'track'
