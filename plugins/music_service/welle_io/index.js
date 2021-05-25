@@ -144,7 +144,9 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
             response = self.listRoot(curUri);
-        } else { }
+        } else {
+            self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: unhandled uri');
+        }
     }
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri - response: ' + response);
     defer.resolve(response);
@@ -193,6 +195,7 @@ ControllerWelle.prototype.listRoot = function () {
             }
         }
     }
+    return radioRoot;
 };
 
 // Define a method to clear, add, and play an array of tracks
