@@ -263,7 +263,17 @@ ControllerWelle.prototype.explodeUri = function (uri) {
     var self = this;
     var defer = libQ.defer();
 
-    // Mandatory: retrieve all info for a given URI
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: ' + uri);
+    var selectedChannel = uri.split('/')[2];
+    self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: selected channel ' + selectedChannel);
+    defer.resolve({
+        uri: self.radioRoot.navigation.lists.items[selectedChannel - 1].uri,
+        service: self.serviceName,
+        name: self.radioRoot.navigation.lists.items[selectedChannel - 1].title,
+        //radioType: station,
+        trackType: 'welle_io',
+        type: 'track'
+    });
 
     return defer.promise;
 };
