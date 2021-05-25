@@ -144,6 +144,10 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     if (curUri.startsWith('welle_io')) {
         if (curUri == 'welle_io') {
             response = self.listRoot(curUri);
+        } else if (curUri.startsWith('welle_io/cannel/')) {
+            response = self.listRoot(curUri);
+            var selectedChannel = curUri.split('/')[2];
+            self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: selected channel ' + selectedChannel);
         } else {
             self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: unhandled uri');
         }
