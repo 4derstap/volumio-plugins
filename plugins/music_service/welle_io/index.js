@@ -267,9 +267,9 @@ ControllerWelle.prototype.explodeUri = function (uri) {
     var selectedChannel = uri.split('/')[2];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: selected channel ' + selectedChannel);
     defer.resolve({
-        uri: self.radioRoot.navigation.lists.items[selectedChannel - 1].uri,
+        uri: self.listRoot().navigation.lists.items[selectedChannel - 1].uri,
         service: self.serviceName,
-        name: self.radioRoot.navigation.lists.items[selectedChannel - 1].title,
+        name: self.listRoot().navigation.lists.items[selectedChannel - 1].title,
         //radioType: station,
         trackType: 'welle_io',
         type: 'track'
