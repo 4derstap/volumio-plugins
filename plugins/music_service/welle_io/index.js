@@ -162,7 +162,7 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
 };
 
 ControllerWelle.prototype.listRoot = function () {
-    var radioRoot = {
+    return {
         'navigation': {
             'lists': [
                 {
@@ -198,7 +198,6 @@ ControllerWelle.prototype.listRoot = function () {
             }
         }
     }
-    return radioRoot;
 };
 
 // Define a method to clear, add, and play an array of tracks
@@ -265,7 +264,9 @@ ControllerWelle.prototype.explodeUri = function (uri) {
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: ' + uri);
     var selectedChannel = uri.split('/')[2];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: selected channel ' + selectedChannel);
-    var channel = self.listRoot().navigation.lists.items[selectedChannel - 1];
+    var channels = self.listRoot().navigation.lists.items;
+    console.log(self.listRoot().navigation.lists);
+    var channel = channels[selectedChannel - 1];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: playing channel ' + channel.title);
     defer.resolve({
         uri: channel.uri,

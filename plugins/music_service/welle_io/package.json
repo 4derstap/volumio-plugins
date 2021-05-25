@@ -4,7 +4,7 @@
     "description": "Uses welle.io to play DAB+ radio stations",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "node_modules/jest/bin/jest.js"
     },
     "author": "4derstap",
     "license": "ISC",
@@ -17,5 +17,8 @@
         "fs-extra": "^0.28.0",
         "kew": "^0.7.0",
         "v-conf": "^1.4.0"
+    },
+    "devDependencies": {
+        "jest": "^27.0.1"
     }
 }
