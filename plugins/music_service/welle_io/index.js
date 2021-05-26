@@ -15,6 +15,7 @@ function ControllerWelle(context) {
     this.commandRouter = this.context.coreCommand;
     this.logger = this.context.logger;
     this.configManager = this.context.configManager;
+    this.serviceName = 'welle_io';
 
 }
 
@@ -33,7 +34,6 @@ ControllerWelle.prototype.onStart = function () {
     var self = this;
 
     self.mpdPlugin = this.commandRouter.pluginManager.getPlugin('music_service', 'mpd');
-    self.serviceName = 'welle_io';
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] onStart');
 
     //self.loadRadioI18nStrings();
@@ -264,15 +264,13 @@ ControllerWelle.prototype.explodeUri = function (uri) {
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: ' + uri);
     var selectedChannel = uri.split('/')[2];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: selected channel ' + selectedChannel);
-    var channels = self.listRoot().navigation.lists.items;
-    console.log(self.listRoot().navigation.lists);
+    var channels = self.listRoot().navigation.lists[0].items;
     var channel = channels[selectedChannel - 1];
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] explodeUri: playing channel ' + channel.title);
     defer.resolve({
-        uri: channel.uri,
+        uri: channel.url,
         service: self.serviceName,
         name: channel.title,
-        //radioType: station,
         trackType: 'welle_io',
         type: 'track'
     });
