@@ -117,10 +117,10 @@ ControllerWelle.prototype.addToBrowseSources = function () {
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] addToBrowseSources');
     // Use this function to add your music service plugin to music sources
     var data = {
-        name: 'Welle.io DAB+ Radio',
-        uri: 'welle_io',
+        name: self.getRadioI18nString('PLUGIN_NAME'),
+        uri: self.serviceName,
         plugin_type: 'music_service',
-        plugin_name: 'welle_io',
+        plugin_name: self.serviceName,
         albumart: '/albumart?sourceicon=music_service/welle_io/icon.png'
     };
     this.commandRouter.volumioAddToBrowseSources(data);
@@ -130,7 +130,7 @@ ControllerWelle.prototype.removeFromBrowseSources = function () {
     // Use this function to add your music service plugin to music sources
     var self = this;
 
-    self.commandRouter.volumioRemoveToBrowseSources('Welle.io DAB+ Radio');
+    self.commandRouter.volumioRemoveToBrowseSources(self.getRadioI18nString('PLUGIN_NAME'));
 };
 
 ControllerWelle.prototype.handleBrowseUri = function (curUri) {
@@ -141,9 +141,9 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
     //self.commandRouter.logger.info(curUri);
     // curl -X POST http://192.168.2.197:7979/channel -d 5C
     self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: ' + curUri);
-    if (curUri.startsWith('welle_io')) {
+    if (curUri.startsWith(self.serviceName)) {
         response = self.listRoot(curUri);
-        if (curUri == 'welle_io') {
+        if (curUri == self.serviceName) {
         } else if (curUri.startsWith('welle_io/channel/')) {
             var selectedChannel = curUri.split('/')[2];
             self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] handleBrowseUri: selected channel ' + selectedChannel);
@@ -171,7 +171,7 @@ ControllerWelle.prototype.listRoot = function () {
                     ],
                     'items': [
                         {
-                            service: 'welle_io',
+                            service: self.serviceName,
                             type: 'mywebradio',
                             title: 'Radio Bob!',
                             artist: '',
@@ -181,7 +181,7 @@ ControllerWelle.prototype.listRoot = function () {
                             url: 'http://192.168.2.197:7979/mp3/0x15dd'
                         },
                         {
-                            service: 'welle_io',
+                            service: self.serviceName,
                             type: 'mywebradio',
                             title: 'Rock Antenne',
                             artist: '',
@@ -203,11 +203,31 @@ ControllerWelle.prototype.listRoot = function () {
 // Define a method to clear, add, and play an array of tracks
 ControllerWelle.prototype.clearAddPlayTrack = function (track) {
     var self = this;
-    self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::clearAddPlayTrack');
+    var defer = libQ.defer();
 
-    self.commandRouter.logger.info(JSON.stringify(track));
+    return self.mpdPlugin.sendMpdCommand('stop', [])
+        .then(function () {
+            return self.mpdPlugin.sendMpdCommand('clear', []);
+        })
+        .then(function () {
+            return self.mpdPlugin.sendMpdCommand('consume 1', []);
+        })
+        .then(function () {
+            self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] set to consume mode, adding url: ' + flacUri);
+            return self.mpdPlugin.sendMpdCommand('add "' + flacUri + '"', []);
+        })
+        .then(function () {
+            self.commandRouter.pushToastMessage('info',
+                self.getRadioI18nString('PLUGIN_NAME'),
+                self.getRadioI18nString('WAIT_FOR_RADIO_CHANNEL'));
 
-    return self.sendSpopCommand('uplay', [track.uri]);
+            return self.mpdPlugin.sendMpdCommand('play', []);
+        })/*.then(function () {
+            return self.setMetadata(metadataUrl);
+        })*/
+        .fail(function (e) {
+            return libQ.reject(new Error());
+        });
 };
 
 ControllerWelle.prototype.seek = function (timepos) {
@@ -271,7 +291,7 @@ ControllerWelle.prototype.explodeUri = function (uri) {
         uri: channel.url,
         service: self.serviceName,
         name: channel.title,
-        trackType: 'welle_io',
+        trackType: self.serviceName,
         type: 'track'
     });
 
