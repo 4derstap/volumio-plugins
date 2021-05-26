@@ -214,8 +214,8 @@ ControllerWelle.prototype.clearAddPlayTrack = function (track) {
             return self.mpdPlugin.sendMpdCommand('consume 1', []);
         })
         .then(function () {
-            self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] set to consume mode, adding url: ' + flacUri);
-            return self.mpdPlugin.sendMpdCommand('add "' + flacUri + '"', []);
+            self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] set to consume mode, adding url: ' + track.uri);
+            return self.mpdPlugin.sendMpdCommand('add "' + track.uri + '"', []);
         })
         .then(function () {
             self.commandRouter.pushToastMessage('info',
