@@ -16,7 +16,7 @@ function ControllerWelle(context) {
     this.logger = this.context.logger;
     this.configManager = this.context.configManager;
     this.serviceName = 'welle_io';
-
+    this.loadRadioI18nStrings();
 }
 
 
@@ -162,6 +162,7 @@ ControllerWelle.prototype.handleBrowseUri = function (curUri) {
 };
 
 ControllerWelle.prototype.listRoot = function () {
+    var self = this;
     return {
         'navigation': {
             'lists': [
@@ -334,7 +335,20 @@ ControllerWelle.prototype.getAlbumArt = function (data, path) {
 };
 
 
+ControllerWelle.prototype.loadRadioI18nStrings = function () {
+    var self = this;
+    self.i18nStrings = fs.readJsonSync(__dirname + '/i18n/strings_en.json');
+    self.i18nStringsDefaults = fs.readJsonSync(__dirname + '/i18n/strings_en.json');
+};
 
+ControllerWelle.prototype.getRadioI18nString = function (key) {
+    var self = this;
+
+    if (self.i18nStrings[key] !== undefined)
+        return self.i18nStrings[key];
+    else
+        return self.i18nStringsDefaults[key];
+};
 
 
 ControllerWelle.prototype.search = function (query) {
