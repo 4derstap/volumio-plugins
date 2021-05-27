@@ -213,9 +213,9 @@ ControllerWelle.prototype.clearAddPlayTrack = function (track) {
         /*/.then(function () {
             return self.mpdPlugin.sendMpdCommand('consume 1', []);
         })*/
-        .then(function () {
+        /*.then(function () {
             return self.mpdPlugin.sendMpdCommand('load "' + track.uri + '"', []);
-        })
+        })*/
         .then(function () {
             self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] set to consume mode, adding url: ' + track.uri);
             return self.mpdPlugin.sendMpdCommand('add "' + track.uri + '"', []);
