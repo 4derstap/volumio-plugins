@@ -1,5 +1,6 @@
 {
-  "PLUGIN_CONFIGURATION":"Example Plugin Configuration",
+  "PLUGIN_CONFIGURATION": "Example Plugin Configuration",
   "PLUGIN_NAME": "Welle.io DAB+ Radio",
-  "SAVE":"Save"
+  "SAVE": "Save",
+  "WAIT_FOR_RADIO_CHANNEL": "Please Wait for radio channel...."
 }

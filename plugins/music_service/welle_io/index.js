@@ -210,8 +210,11 @@ ControllerWelle.prototype.clearAddPlayTrack = function (track) {
         .then(function () {
             return self.mpdPlugin.sendMpdCommand('clear', []);
         })
-        .then(function () {
+        /*/.then(function () {
             return self.mpdPlugin.sendMpdCommand('consume 1', []);
+        })*/
+        .then(function () {
+            return self.mpdPlugin.sendMpdCommand('load "' + track.uri + '"', []);
         })
         .then(function () {
             self.logger.info('[' + Date.now() + '] ' + '[ControllerWelle] set to consume mode, adding url: ' + track.uri);
@@ -221,9 +224,14 @@ ControllerWelle.prototype.clearAddPlayTrack = function (track) {
             self.commandRouter.pushToastMessage('info',
                 self.getRadioI18nString('PLUGIN_NAME'),
                 self.getRadioI18nString('WAIT_FOR_RADIO_CHANNEL'));
-
-            return self.mpdPlugin.sendMpdCommand('play', []);
-        })/*.then(function () {
+            self.commandRouter.stateMachine.setConsumeUpdateService('mpd');
+            return self.mpdPlugin.sendMpdCommand('play', []).then(function () {
+                return self.mpdPlugin.getState().then(function (state) {
+                    return self.commandRouter.stateMachine.syncState(state, self.serviceName);
+                });
+            });
+        })
+        /*.then(function () {
             return self.setMetadata(metadataUrl);
         })*/
         .fail(function (e) {
@@ -242,7 +250,11 @@ ControllerWelle.prototype.stop = function () {
     var self = this;
     self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::stop');
 
-
+    return self.mpdPlugin.stop().then(function () {
+        return self.mpdPlugin.getState().then(function (state) {
+            return self.commandRouter.stateMachine.syncState(state, self.serviceName);
+        });
+    });
 };
 
 // Spop pause
@@ -250,7 +262,11 @@ ControllerWelle.prototype.pause = function () {
     var self = this;
     self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'ControllerWelle::pause');
 
-
+    return self.mpdPlugin.pause().then(function () {
+        return self.mpdPlugin.getState().then(function (state) {
+            return self.commandRouter.stateMachine.syncState(state, self.serviceName);
+        });
+    });
 };
 
 // Get state
